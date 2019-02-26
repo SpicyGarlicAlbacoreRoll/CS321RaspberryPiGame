@@ -24,16 +24,24 @@ class GameObject:
 ############################## PLAYER CLASS ##################################
 
 class Player(GameObject):
-    def __init__(self, image, speed, screenWidth, screenHeight):
+    def __init__(self, image, speed, screenWidth, screenHeight, gravity, mass, timeStep):
         GameObject.__init__(self, image, speed, screenWidth, screenHeight)
         self.playerStates = ["IDLE", "RUNNING", "JUMPING"]
         self.playerState = self.playerStates[0]
 
+#####INITIALIZE/ASSIGN PHYSICS VARIABLES#####    
+            #v = a(t) + v[0]
+            #d = v[0]t + 0.5 * a * t^2
+
+        self.gravity = gravity
+        self.velocity = speed       #will fix later and just remove speed
+        self.force = gravity * mass
+        self.timeStep = timeStep
+        self.displacement = 0
     def update(self):
         GameObject.update(self)
+        self.updatePhysics()
         self.playerController()
-        #pos = pygame.mouse.get_pos()
-        #self.mouseFollow(pos)
 
     def mouseFollow(self, pos):
         if pos[0] < self.screenWidth and pos[0] > 0:
@@ -46,19 +54,25 @@ class Player(GameObject):
         #VERTICAL
         if pygame.key.get_pressed()[pygame.K_w]:
             if self.pos[1] >= 0 - self.spriteCenter[1]:   
-                self.pos[1] -= self.speed
+                self.pos[1] -= self.speed + self.displacement
         if pygame.key.get_pressed()[pygame.K_s]:
             if self.pos[1] <= self.screenHeight - self.spriteCenter[1]:  
-                self.pos[1] += self.speed
+                self.pos[1] += self.speed + self.displacement
 
         #HORIZONTAL
         if pygame.key.get_pressed()[pygame.K_a]:
             if self.pos[0] >= 0 - self.spriteCenter[0]:
-                self.pos[0] -= self.speed
+                self.pos[0] -= self.speed + self.displacement
         if pygame.key.get_pressed()[pygame.K_d]:
             if self.pos[0] <= self.screenWidth - self.spriteCenter[0]:
-                self.pos[0] += self.speed
-
+                self.pos[0] += self.speed + self.displacement
+        
 
     def updatePlayerState(self):
         self.playerState = self.playerStates[0]
+
+    def updatePhysics(self):
+        self.velocity = 1 * self.timeStep + self.velocity
+            #d = v[0]t + 0.5 * a * t^2
+
+        self.displacement = self.velocity + 0.5 * 1 * self.timeStep**2
