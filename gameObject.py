@@ -35,9 +35,12 @@ class Player(GameObject):
 
         self.gravity = gravity
         self.velocity = speed       #will fix later and just remove speed
+        self.initialVelocity = self.velocity
         self.force = gravity * mass
         self.timeStep = timeStep
+        self.timeSinceKeyDown = 0
         self.displacement = 0
+
     def update(self):
         GameObject.update(self)
         self.updatePhysics()
@@ -52,21 +55,31 @@ class Player(GameObject):
     def playerController(self):
     #WASD CONTROLLER
         #VERTICAL
-        if pygame.key.get_pressed()[pygame.K_w]:
-            if self.pos[1] >= 0 - self.spriteCenter[1]:   
-                self.pos[1] -= self.speed + self.displacement
-        if pygame.key.get_pressed()[pygame.K_s]:
-            if self.pos[1] <= self.screenHeight - self.spriteCenter[1]:  
-                self.pos[1] += self.speed + self.displacement
+        keys = pygame.key.get_pressed()
+        if(keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]):
+            if pygame.key.get_pressed()[pygame.K_w]:
+                if self.pos[1] >= 0 - self.spriteCenter[1]:   
+                    self.pos[1] -= self.speed + self.displacement
+            if pygame.key.get_pressed()[pygame.K_s]:
+                if self.pos[1] <= self.screenHeight - self.spriteCenter[1]:  
+                    self.pos[1] += self.speed + self.displacement
 
-        #HORIZONTAL
-        if pygame.key.get_pressed()[pygame.K_a]:
-            if self.pos[0] >= 0 - self.spriteCenter[0]:
-                self.pos[0] -= self.speed + self.displacement
-        if pygame.key.get_pressed()[pygame.K_d]:
-            if self.pos[0] <= self.screenWidth - self.spriteCenter[0]:
-                self.pos[0] += self.speed + self.displacement
+            #HORIZONTAL
+            if pygame.key.get_pressed()[pygame.K_a]:
+                if self.pos[0] >= 0 - self.spriteCenter[0]:
+                    self.pos[0] -= self.speed + self.displacement
+            if pygame.key.get_pressed()[pygame.K_d]:
+                if self.pos[0] <= self.screenWidth - self.spriteCenter[0]:
+                    self.pos[0] += self.speed + self.displacement
         
+            self.timeSinceKeyDown = 0
+
+        elif (self.timeSinceKeyDown < 3):
+            self.timeSinceKeyDown += 1
+        else:
+            self.displacement = 0
+            self.velocity = self.initialVelocity
+            
 
     def updatePlayerState(self):
         self.playerState = self.playerStates[0]
@@ -75,4 +88,4 @@ class Player(GameObject):
         self.velocity = 1 * self.timeStep + self.velocity
             #d = v[0]t + 0.5 * a * t^2
 
-        self.displacement = self.velocity + 0.5 * 1 * self.timeStep**2
+        self.displacement = self.velocity * 2 + 0.5 * 1 * self.timeStep**2
