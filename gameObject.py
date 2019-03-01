@@ -17,6 +17,8 @@ class GameObject:
         self.spriteCenter = [self.spriteWidth / 2, self.spriteHeight / 2]
     def update(self):
         self.playAnim()
+        #self.pos = self.physicsBody.pos
+
 
     def playAnim(self):
         x = 1   #placeHolder
@@ -26,13 +28,15 @@ class GameObject:
     
     def attachPhysicsBody(self, physBody):
         self.physicsBody = physBody
-        self.physicsBody.position = 50, 100
+        self.physicsBody.position = 2, 2
 
     def createPhysicsPolyBox(self, physicsBox):
         self.physicsBox = physicsBox
 
-    def updatePhysics(self, physicsClock):
+    def updatePhysics(self, physicsClock, newPos):
         self.physicsClock = physicsClock
+        self.pos = newPos
+
 
 
 
@@ -63,9 +67,9 @@ class Player(GameObject):
 
     def update(self):
         GameObject.update(self)
-        self.updatePhysicsTemp()
-        self.playerController()
-
+        #self.updatePhysicsTemp()
+        #self.playerController()
+        
     def mouseFollow(self, pos):
         if pos[0] < self.screenWidth and pos[0] > 0:
             self.pos[0] = self.image.get_rect().move(pos)[0] - self.spriteCenter[0]
@@ -108,7 +112,7 @@ class Player(GameObject):
         self.velocity = 1 * self.timeStep + self.velocity
             #d = v[0]t + 0.5 * a * t^2
 
-        self.displacement = self.velocity * 2 + 0.5 * 1 * self.timeStep**2
+        self.displacement = self.velocity + 0.5 * 1 * self.timeStep**2
 
 
 

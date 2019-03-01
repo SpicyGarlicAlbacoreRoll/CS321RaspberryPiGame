@@ -41,7 +41,7 @@ while True:
     localPhysicsSim.updatePhysicsSim(clock)
 
     for o in objects:
-        screen.blit(background, o.pos, o.pos)
+        screen.blit(background, o.pos)
 
     for o in objects:
         o.update()
@@ -50,5 +50,5 @@ while True:
     localPhysicsSim.space.step(0.02)
 
     pygame.display.update()
-    pygame.time.delay(timeStep) #in milliseconds(?)
+    #pygame.time.delay(timeStep) #in milliseconds(?)
     clock.tick(50)
