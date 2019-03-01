@@ -1,5 +1,5 @@
-import sys, pygame
-import gameObject
+import sys, pygame, pymunk
+import gameObject, physicsSim
 
 pygame.init()
 screenWidth = 600
@@ -11,6 +11,7 @@ timeStep = 50       #milliseconds
 timeStepSec = timeStep * 0.001
 gravity = 9.8       #meters per second^2
 playerMass = 1      #kilograms
+clock = pygame.time.Clock()
 
 player = pygame.image.load('basicHeart.png')
 player = pygame.transform.scale(player, (128, 128))
@@ -31,10 +32,13 @@ for x in range(1):
     o = gameObject.Player(player, playerSpeed, screenWidth, screenHeight, gravity, playerMass, timeStepSec)
     objects.append(o)
 
+localPhysicsSim = physicsSim.PhysicsSim(objects, clock)
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+
+    localPhysicsSim.updatePhysicsSim(clock)
 
     for o in objects:
         screen.blit(background, o.pos, o.pos)
@@ -43,6 +47,8 @@ while True:
         o.update()
         screen.blit(o.image, o.pos)
 
+    localPhysicsSim.space.step(0.02)
+
     pygame.display.update()
     pygame.time.delay(timeStep) #in milliseconds(?)
-    
+    clock.tick(50)

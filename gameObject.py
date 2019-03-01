@@ -1,5 +1,6 @@
 import pygame
-
+import pymunk
+#from pygame.math import *
 
 ############################## GAMEOBJECT CLASS ##################################
 
@@ -14,14 +15,31 @@ class GameObject:
         self.spriteWidth = self.image.get_size()[0]
         self.spriteHeight = self.image.get_size()[1]
         self.spriteCenter = [self.spriteWidth / 2, self.spriteHeight / 2]
-
     def update(self):
         self.playAnim()
 
     def playAnim(self):
         x = 1   #placeHolder
 
+
+######################### PYMUNK PHYSICS FUNCTIONS ###########################
+    
+    def attachPhysicsBody(self, physBody):
+        self.physicsBody = physBody
+        self.physicsBody.position = 50, 100
+
+    def createPhysicsPolyBox(self, physicsBox):
+        self.physicsBox = physicsBox
+
+    def updatePhysics(self, physicsClock):
+        self.physicsClock = physicsClock
+
+
+
+
+##############################################################################
 ############################## PLAYER CLASS ##################################
+##############################################################################
 
 class Player(GameObject):
     def __init__(self, image, speed, screenWidth, screenHeight, gravity, mass, timeStep):
@@ -41,9 +59,11 @@ class Player(GameObject):
         self.timeSinceKeyDown = 0
         self.displacement = 0
 
+        #self.velocity = pygame.math
+
     def update(self):
         GameObject.update(self)
-        self.updatePhysics()
+        self.updatePhysicsTemp()
         self.playerController()
 
     def mouseFollow(self, pos):
@@ -84,8 +104,15 @@ class Player(GameObject):
     def updatePlayerState(self):
         self.playerState = self.playerStates[0]
 
-    def updatePhysics(self):
+    def updatePhysicsTemp(self):
         self.velocity = 1 * self.timeStep + self.velocity
             #d = v[0]t + 0.5 * a * t^2
 
         self.displacement = self.velocity * 2 + 0.5 * 1 * self.timeStep**2
+
+
+
+
+##############################################################################
+######################## ENVIRONMENT CLASS ###################################
+##############################################################################
