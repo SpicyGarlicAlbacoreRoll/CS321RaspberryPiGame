@@ -120,3 +120,9 @@ class Player(GameObject):
 ##############################################################################
 ######################## ENVIRONMENT CLASS ###################################
 ##############################################################################
+
+class EnvironmentObject(GameObject):
+    def __init__(self, image, speed, screenWidth, screenHeight):
+        GameObject.__init__(self, image, speed, screenWidth, screenHeight)
+        
+    

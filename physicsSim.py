@@ -9,7 +9,7 @@ class PhysicsSim:
         self.space = pymunk.Space()
         self.space.gravity = (0.0, -900.0)
         self.bodies = []
-        self.playerBody = pymunk.Body(1, 1666)
+        self.playerBody = pymunk.Body(1, 1666, pymunk.Body.DYNAMIC)
         self.playerBox = pymunk.Poly.create_box(self.playerBody)
         self.clock = clock
 
