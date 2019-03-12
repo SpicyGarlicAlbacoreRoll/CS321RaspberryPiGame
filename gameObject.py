@@ -1,5 +1,5 @@
 import pygame
-
+import mathClass
 
 ############################## GAMEOBJECT CLASS ##################################
 
@@ -8,12 +8,16 @@ class GameObject:
         self.speed = speed
         self.image = image
         self.pos = image.get_rect().move(0, 0)
+
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
 
         self.spriteWidth = self.image.get_size()[0]
         self.spriteHeight = self.image.get_size()[1]
         self.spriteCenter = [self.spriteWidth / 2, self.spriteHeight / 2]
+
+        # TESTING
+        self.position = mathClass.Vec2D(0, 0)
 
     def update(self):
         self.playAnim()
