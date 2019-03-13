@@ -16,7 +16,7 @@ playerCollider = mathClass.Collider((2, 2), False, playerPosition)
 #     playerCollider.update()
 #     print(playerCollider.position.getX())
 
-boxTestPosition = mathClass.Vec2D(15, 15)
+boxTestPosition = mathClass.Vec2D(13, 13)
 boxTestCollider = mathClass.Collider((5,5), True, boxTestPosition)
 
 
