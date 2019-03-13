@@ -74,7 +74,7 @@ class worldSpace:
 
     def update(self, colliderList):
         for obj in colliderList:
-            if obj.isStatic == True:    #If the collider is from an enviroment obj, we ignore it
+            if obj.isStatic == False:    #If the collider is from an enviroment obj, we ignore it
                 for otherObj in colliderList:   #checks every gameobject's collider against the other
 
 
@@ -85,8 +85,8 @@ class worldSpace:
                         obj.position.setX(obj.position.getX() + offset)
                 
                     #CHECK BOTTOM of OBJ vs TOP of other.
-                    if (obj.position.getY() <= otherObj.position.getY() + otherObj.getHeight()
-                    and obj.position.getY() > otherObj.position.getY()):                        
-                        offset = (otherObj.position.getX() + otherObj.getWidth()) - obj.position.getX() + 1
-                        obj.position.setX(obj.position.getX() + offset)
+                    # if (obj.position.getY() <= otherObj.position.getY() + otherObj.getHeight()
+                    # and obj.position.getY() > otherObj.position.getY()):                        
+                    #     offset = (otherObj.position.getX() + otherObj.getWidth()) - obj.position.getX() + 1
+                    #     obj.position.setX(obj.position.getX() + offset)
                 
