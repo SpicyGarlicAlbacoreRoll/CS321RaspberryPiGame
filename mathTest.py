@@ -28,18 +28,18 @@ colliderList.append(boxTestCollider)
 world = mathClass.worldSpace(9.8)
 
 
-print("PLAYER X PRIOR POS \n")
-print(playerCollider.position.getX())
+print("PLAYER Y PRIOR POS \n")
+print(playerCollider.position.getY())
 print("\n")
     
-print("BOX X PRIOR POS \n")
-print(boxTestCollider.position.getX())
+print("BOX Y PRIOR POS \n")
+print(boxTestCollider.position.getY())
 
 
 world.update(colliderList)
 print("\n")
-print("PLAYER X END POS \n")
-print(playerCollider.position.getX())
+print("PLAYER Y END POS \n")
+print(playerCollider.position.getY())
 print("\n")
-print("BOX X POS")
-print(boxTestCollider.position.getX())
+print("BOX Y POS")
+print(boxTestCollider.position.getY())

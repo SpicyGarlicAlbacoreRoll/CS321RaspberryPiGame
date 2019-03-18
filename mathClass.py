@@ -75,23 +75,35 @@ class worldSpace:
     def update(self, colliderList):
         for obj in colliderList:
             i = 0
-            if obj.isStatic == False:    #If the collider is from an enviroment obj, we ignore it
+            if obj.isStatic == False:           #If the collider is from an enviroment obj, we ignore it
                 j = 0
                 for otherObj in colliderList:   #checks every gameobject's collider against the other
-                    if i != j:
+                    if i != j:                  #Skips objects comparing to self
+                    
+                    #Variables written this way cause it's a lot easier to 
+                    #conceptualize intersections between objects
+                    #OBJECT MIDPOINTS
                         objMidPointX = obj.position.getX() + obj.getWidth() / 2
+                        objMidPointY = obj.position.getY() + obj.getHeight() / 2
                         otherObjMidPointX = otherObj.position.getX() + otherObj.getWidth() / 2
+                        otherObjMidPointY = otherObj.position.getY() + otherObj.getHeight() / 2
 
-                        objLeftSide =   obj.position.getX()
-                        objRightSide =  objLeftSide + obj.getWidth()
+                    #SIDES OF OBJECTS (LEFT, RIGHT, BOTTOM, TOP)
+                        objLeftSide     =   obj.position.getX()
+                        objRightSide    =   objLeftSide + obj.getWidth()
+                        objBottom       =   obj.position.getY()
+                        objTop          =   objBottom + obj.getHeight()
 
-                        otherObjLeftSide = otherObj.position.getX()
-                        otherObjRightSide = otherObjLeftSide + otherObj.getWidth()
+                        otherObjLeftSide    =   otherObj.position.getX()
+                        otherObjRightSide   =   otherObjLeftSide + otherObj.getWidth()
+                        otherObjBottom      =   otherObj.position.getY()
+                        otherObjTop         =   otherObjBottom + otherObj.getHeight()
 
                         print("Midpoint Object: ", objMidPointX)
                         print("Midpoint otherObject: ", otherObjMidPointX)
                         
-                    #CHECK LEFT SIDE of OBJ vs RIGHT SIDE of other.
+                    # X-AXIS INTERSECTION CHECK
+
                         if (objLeftSide < otherObjRightSide        #Left side is to left of other objects right side
                         and objMidPointX >= otherObjMidPointX):     #Object midpoint is greater than other object midpoint                       
                             offset = otherObjRightSide - objLeftSide
@@ -100,14 +112,22 @@ class worldSpace:
                             
                         elif(objRightSide > otherObjLeftSide
                         and objMidPointX < otherObjMidPointX):
-                            offset = objLeftSide + obj.getWidth() - otherObjLeftSide  
+                            offset = objRightSide - otherObjLeftSide  
                             obj.position.setX(obj.position.getX() - offset)
                             print("PUSH LEFT")
-                    
-                        #CHECK BOTTOM of OBJ vs TOP of other.
-                        # if (obj.position.getY() <= otherObj.position.getY() + otherObj.getHeight()
-                        # and obj.position.getY() > otherObj.position.getY()):                        
-                        #     offset = (otherObj.position.getX() + otherObj.getWidth()) - obj.position.getX() + 1
-                        #     obj.position.setX(obj.position.getX() + offset)
+
+                    # Y-AXIS INTERSECTION CHECK
+
+                        if (objBottom < otherObjTop       #Bottom of object coord is less than height
+                        and objMidPointY >= otherObjMidPointY):     #Object midpoint is greater than other object midpoint                       
+                            offset = otherObjTop - objBottom
+                            obj.position.setY(objBottom + offset)
+                            print("PUSH UP")
+                            
+                        elif(objTop > otherObjBottom
+                        and objMidPointY < otherObjMidPointY):
+                            offset = objTop - otherObjBottom  
+                            obj.position.setY(objBottom - offset)
+                            print("PUSH DOWN")                        
                     j += 1
                 i += 1
