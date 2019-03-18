@@ -8,8 +8,8 @@ velocity00.addVec(velocity01)
 # print(velocity00.getX())
 
 
-playerPosition = mathClass.Vec2D(14, 14)
-playerCollider = mathClass.Collider((2, 2), False, playerPosition)
+playerPosition = mathClass.Vec2D(13, 13)
+playerCollider = mathClass.Collider((3, 3), False, playerPosition)
 
 
 # for x in range (1, 5):
@@ -17,7 +17,7 @@ playerCollider = mathClass.Collider((2, 2), False, playerPosition)
 #     print(playerCollider.position.getX())
 
 boxTestPosition = mathClass.Vec2D(13, 13)
-boxTestCollider = mathClass.Collider((5,5), True, boxTestPosition)
+boxTestCollider = mathClass.Collider((6,6), True, boxTestPosition)
 
 
 
