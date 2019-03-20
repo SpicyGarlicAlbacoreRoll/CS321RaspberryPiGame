@@ -46,8 +46,8 @@ class Collider:
         self.g = 9.8                #gravity
         self.isStatic = isStatic
         self.position = Vec2D(position.getX(), position.getY())
-        self.width = sprite[0]
-        self.height = sprite[1]
+        self.width = sprite.get_rect().x
+        self.height = sprite.get_rect().y
 
     def getWidth(self):
         return self.width
@@ -55,12 +55,14 @@ class Collider:
     def getHeight(self):
         return self.height
 
-    def update(self):
-        self.physics()
+    def update(self, position):
+        self.physics(position)
 
-    def physics(self):
-        otherVec = Vec2D(2, 2)
-        self.position.addVec(otherVec)
+    def physics(self, position):
+        self.position.setX(position.getX())
+        self.position.setY(position.getY())
+        # otherVec = Vec2D(2, 2)
+        # self.position.addVec(otherVec)
 
 
 ##########################################################
@@ -99,8 +101,9 @@ class worldSpace:
                         otherObjBottom      =   otherObj.position.getY()
                         otherObjTop         =   otherObjBottom + otherObj.getHeight()
 
-                        print("Midpoint Object: ", objMidPointX)
-                        print("Midpoint otherObject: ", otherObjMidPointX)
+                    #Debugging code
+                        # print("Midpoint Object: ", objMidPointX)
+                        # print("Midpoint otherObject: ", otherObjMidPointX)
                         
                     # X-AXIS INTERSECTION CHECK
 
