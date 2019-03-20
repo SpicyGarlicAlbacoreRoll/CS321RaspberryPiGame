@@ -14,7 +14,8 @@ class GameObject:
         self.spriteWidth = self.image.get_size()[0]
         self.spriteHeight = self.image.get_size()[1]
         self.spriteCenter = [self.spriteWidth / 2, self.spriteHeight / 2]
-
+        self.collider = mathClass.Collider(image, False, self.position)
+        
     #Placeholder
     def update(self):
         self.playAnim()
@@ -30,7 +31,7 @@ class Player(GameObject):
         GameObject.__init__(self, image, speed, screenWidth, screenHeight)
         self.playerStates = ["IDLE", "RUNNING", "JUMPING"]
         self.playerState = self.playerStates[0]
-        self.collider = mathClass.Collider(image, False, self.position)
+        
 
 #####INITIALIZE/ASSIGN PHYSICS VARIABLES#####    
             #v = a(t) + v[0]

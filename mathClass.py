@@ -106,31 +106,36 @@ class worldSpace:
                         # print("Midpoint otherObject: ", otherObjMidPointX)
                         
                     # X-AXIS INTERSECTION CHECK
-
-                        if (objLeftSide < otherObjRightSide        #Left side is to left of other objects right side
-                        and objMidPointX >= otherObjMidPointX):     #Object midpoint is greater than other object midpoint                       
-                            offset = otherObjRightSide - objLeftSide
-                            obj.position.setX(obj.position.getX() + offset)
-                            print("PUSH RIGHT")
+                        if((objTop > otherObjBottom and objMidPointY < otherObjMidPointY)   #Top overlaps bottom
+                        or (objBottom < otherObjTop and objMidPointY > otherObjMidPointY)): #Bottom overlaps top
                             
-                        elif(objRightSide > otherObjLeftSide
-                        and objMidPointX < otherObjMidPointX):
-                            offset = objRightSide - otherObjLeftSide  
-                            obj.position.setX(obj.position.getX() - offset)
-                            print("PUSH LEFT")
+                            if (objLeftSide < otherObjRightSide        #Left side is to left of other objects right side
+                            and objMidPointX >= otherObjMidPointX      #Object midpoint is greater than other object midpoint
+                            and objBottom < otherObjTop):                            
+                                offset = otherObjRightSide - objLeftSide
+                                obj.position.setX(obj.position.getX() + offset)
+                                print("PUSH RIGHT")
+                                
+                            elif(objRightSide > otherObjLeftSide
+                            and objMidPointX < otherObjMidPointX):
+                                offset = objRightSide - otherObjLeftSide  
+                                obj.position.setX(obj.position.getX() - offset)
+                                print("PUSH LEFT")
 
                     # Y-AXIS INTERSECTION CHECK
-
-                        if (objBottom < otherObjTop       #Bottom of object coord is less than height
-                        and objMidPointY >= otherObjMidPointY):     #Object midpoint is greater than other object midpoint                       
-                            offset = otherObjTop - objBottom
-                            obj.position.setY(objBottom + offset)
-                            print("PUSH UP")
+                        if((objRightSide > otherObjLeftSide and objMidPointX < otherObjMidPointX)   #Right overlaps Left
+                        or (objLeftSide < otherObjRightSide and objMidPointX > otherObjMidPointX)): #Left overlaps Right
                             
-                        elif(objTop > otherObjBottom
-                        and objMidPointY < otherObjMidPointY):
-                            offset = objTop - otherObjBottom  
-                            obj.position.setY(objBottom - offset)
-                            print("PUSH DOWN")                        
+                            if (objBottom < otherObjTop             #Bottom of object coord is less than height
+                            and objMidPointY >= otherObjMidPointY):   #Object midpoint is greater than other object midpoint
+                                offset = otherObjTop - objBottom
+                                obj.position.setY(objBottom + offset)
+                                print("PUSH UP")
+                                
+                            elif(objTop > otherObjBottom
+                            and objMidPointY < otherObjMidPointY):
+                                offset = objTop - otherObjBottom  
+                                obj.position.setY(objBottom - offset)
+                                print("PUSH DOWN")                        
                     j += 1
                 i += 1

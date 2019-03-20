@@ -2,6 +2,9 @@ import sys, pygame
 import gameObject
 import mathClass
 
+
+
+
 pygame.init()
 screenWidth = 600
 screenHeight = 500
@@ -58,7 +61,7 @@ while True:
     #Update objects and draw them
     for o in objects:
         o.update()
-        screen.blit(o.image, [o.position.getX(), o.position.getY()])
+        screen.blit(o.image, (o.position.getX(), o.position.getY()))
 
     pygame.display.update()
     pygame.time.delay(timeStep) #in milliseconds(?)
