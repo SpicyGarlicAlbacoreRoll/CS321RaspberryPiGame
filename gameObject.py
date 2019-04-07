@@ -74,18 +74,18 @@ class Player(GameObject):
         #VERTICAL
             if pygame.key.get_pressed()[pygame.K_w]:
                 if positionY >= 0 - self.spriteCenter[1]:   
-                    positionY -= self.speed + self.displacement
+                    positionY -= self.speed #+ self.displacement
             if pygame.key.get_pressed()[pygame.K_s]:
                 if positionY <= self.screenHeight - self.spriteCenter[1]:  
-                    positionY += self.speed + self.displacement
+                    positionY += self.speed #self.displacement
 
         #HORIZONTAL
             if pygame.key.get_pressed()[pygame.K_a]:
                 if positionX >= 0 - self.spriteCenter[0]:
-                    positionX -= self.speed + self.displacement
+                    positionX -= self.speed #+ self.displacement
             if pygame.key.get_pressed()[pygame.K_d]:
                 if positionX <= self.screenWidth - self.spriteCenter[0]:
-                    positionX += self.speed + self.displacement
+                    positionX += self.speed #+ self.displacement
 
             self.position.setX(positionX)
             self.position.setY(positionY)
