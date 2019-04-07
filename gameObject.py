@@ -93,7 +93,7 @@ class Player(GameObject):
             # self.collider.position.setY(positionY)
             self.timeSinceKeyDown = 0
             print("objects: ", self.position.getX(), self.position.getY())   #For debugging player position vs collider position
-            print("collider:", self.collider.position.getX(), self.position.getY())              #(They should be the same)
+            print("collider:", self.collider.position.getX(), self.collider.position.getY())              #(They should be the same)
 
         elif (self.timeSinceKeyDown < 3):
             self.timeSinceKeyDown += 1
