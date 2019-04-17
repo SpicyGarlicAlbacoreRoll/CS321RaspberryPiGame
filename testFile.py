@@ -20,6 +20,11 @@ playerMass = 1      #kilograms
 player = pygame.image.load('basicHeart.png')
 player = pygame.transform.scale(player, (128, 128))
 playerSpeed = 5
+playerPos = [5, 5]
+
+ground = pygame.image.load('groundTile00.png')
+ground = pygame.transform.scale(ground, (64, 64))
+groundPos = [screenWidth-64, screenHeight-64]
 
 background = pygame.image.load('placeholderBG00.png')
 background = pygame.transform.scale(background, (600, 500))
@@ -39,13 +44,19 @@ colliders = []      #The list of colliders we're gonna make for each of them
 worldSpace = mathClass.worldSpace(gravity)
 
 #initialize player gameobject, add it to a list, 
-o = gameObject.Player(player, playerSpeed, screenWidth, screenHeight, gravity, playerMass, timeStepSec)
+o = gameObject.Player(player, playerSpeed, playerPos, screenWidth, screenHeight, gravity, playerMass, timeStepSec)
 objects.append(o)
-
-#and add its collider to another list
 c = o.collider
 colliders.append(c)
 
+counter = 0
+for g in range(10):
+    g = gameObject.Environment(ground, 1.0, [groundPos[0] - counter * 64, groundPos[1]], screenWidth, screenHeight)
+    objects.append(g)
+    #and add its collider to another list
+    g = g.collider
+    colliders.append(g)
+    counter += 1
 
 #Pygame main loop
 while True:

@@ -42,12 +42,13 @@ class Vec2D:
 ##########################################################
 
 class Collider:
-    def __init__(self, sprite, isStatic, position):
+    def __init__(self, sprite, isStatic, position, velocity):
         self.g = 9.8                #gravity
         self.isStatic = isStatic
         self.position = Vec2D(position.getX(), position.getY())
         self.width = sprite.get_rect().x
         self.height = sprite.get_rect().y
+        self.speed = velocity
 
     def getWidth(self):
         return self.width
@@ -90,6 +91,7 @@ class worldSpace:
                         otherObjMidPointX = otherObj.position.getX() + otherObj.getWidth() / 2
                         otherObjMidPointY = otherObj.position.getY() + otherObj.getHeight() / 2
 
+                        
                     #SIDES OF OBJECTS (LEFT, RIGHT, BOTTOM, TOP)
                         objLeftSide     =   obj.position.getX()
                         objRightSide    =   objLeftSide + obj.getWidth()
@@ -101,41 +103,44 @@ class worldSpace:
                         otherObjBottom      =   otherObj.position.getY()
                         otherObjTop         =   otherObjBottom + otherObj.getHeight()
 
+                        objectSpeed         = obj.speed
+                        otherObjectSpeed    = otherObj.speed
+
                     #Debugging code
                         # print("Midpoint Object: ", objMidPointX)
                         # print("Midpoint otherObject: ", otherObjMidPointX)
                         
-                    # X-AXIS INTERSECTION CHECK
-                        if((objTop > otherObjBottom and objMidPointY < otherObjMidPointY)   #Top overlaps bottom
-                        or (objBottom < otherObjTop and objMidPointY > otherObjMidPointY)): #Bottom overlaps top
+                    
+                    # if((objTop > otherObjBottom and objMidPointY < otherObjMidPointY)   #Top overlaps bottom
+                    # if (objBottom - objectSpeed < otherObjTop and objMidPointY > otherObjMidPointY): #Bottom overlaps top
+                    # X-AXIS INTERSECTION CHECK   
+                    #     if (objLeftSide - objectSpeed < otherObjRightSide)        #Left side is to left of other objects right side
+                    #     and objMidPointX >= otherObjMidPointX      #Object midpoint is greater than other object midpoint
+                    #     and objBottom < otherObjTop):                            
+                    #         offset = otherObjRightSide - objLeftSide
+                    #         obj.position.setX(obj.position.getX() + offset)
+                    #         print("PUSH RIGHT")
                             
-                            if (objLeftSide < otherObjRightSide        #Left side is to left of other objects right side
-                            and objMidPointX >= otherObjMidPointX      #Object midpoint is greater than other object midpoint
-                            and objBottom < otherObjTop):                            
-                                offset = otherObjRightSide - objLeftSide
-                                obj.position.setX(obj.position.getX() + offset)
-                                print("PUSH RIGHT")
-                                
-                            elif(objRightSide > otherObjLeftSide
-                            and objMidPointX < otherObjMidPointX):
-                                offset = objRightSide - otherObjLeftSide  
-                                obj.position.setX(obj.position.getX() - offset)
-                                print("PUSH LEFT")
+                    #     elif(objRightSide > otherObjLeftSide
+                    #     and objMidPointX < otherObjMidPointX):
+                    #         offset = objRightSide - otherObjLeftSide  
+                    #         obj.position.setX(obj.position.getX() - offset)
+                    #         print("PUSH LEFT")
 
-                    # Y-AXIS INTERSECTION CHECK
-                        if((objRightSide > otherObjLeftSide and objMidPointX < otherObjMidPointX)   #Right overlaps Left
-                        or (objLeftSide < otherObjRightSide and objMidPointX > otherObjMidPointX)): #Left overlaps Right
+                    # # Y-AXIS INTERSECTION CHECK
+                    #     if((objRightSide > otherObjLeftSide and objMidPointX < otherObjMidPointX)   #Right overlaps Left
+                    #     or (objLeftSide < otherObjRightSide and objMidPointX > otherObjMidPointX)): #Left overlaps Right
                             
-                            if (objBottom < otherObjTop             #Bottom of object coord is less than height
-                            and objMidPointY >= otherObjMidPointY):   #Object midpoint is greater than other object midpoint
-                                offset = otherObjTop - objBottom
-                                obj.position.setY(objBottom + offset)
-                                print("PUSH UP")
+                    #         if (objBottom < otherObjTop             #Bottom of object coord is less than height
+                    #         and objMidPointY >= otherObjMidPointY):   #Object midpoint is greater than other object midpoint
+                    #             offset = otherObjTop - objBottom
+                    #             obj.position.setY(objBottom + offset)
+                    #             print("PUSH UP")
                                 
-                            elif(objTop > otherObjBottom
-                            and objMidPointY < otherObjMidPointY):
-                                offset = objTop - otherObjBottom  
-                                obj.position.setY(objBottom - offset)
-                                print("PUSH DOWN")                        
+                    #         elif(objTop > otherObjBottom
+                    #         and objMidPointY < otherObjMidPointY):
+                    #             offset = objTop - otherObjBottom  
+                    #             obj.position.setY(objBottom - offset)
+                    #             print("PUSH DOWN")                        
                     j += 1
                 i += 1

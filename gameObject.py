@@ -3,18 +3,18 @@ import mathClass
 
 ############################## GAMEOBJECT CLASS ##################################
 class GameObject:
-    def __init__(self, image, speed, screenWidth, screenHeight):
+    def __init__(self, image, speed, position, screenWidth, screenHeight):
         self.speed = speed
         self.image = image
         self.pos = image.get_rect().move(0, 0)
-        self.position = mathClass.Vec2D(0, 0)
+        self.position = mathClass.Vec2D(position[0], position[1])
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
 
         self.spriteWidth = self.image.get_size()[0]
         self.spriteHeight = self.image.get_size()[1]
         self.spriteCenter = [self.spriteWidth / 2, self.spriteHeight / 2]
-        self.collider = mathClass.Collider(image, False, self.position)
+        self.collider = mathClass.Collider(image, False, self.position, self.speed)
         
     #Placeholder
     def update(self):
@@ -24,11 +24,16 @@ class GameObject:
     def playAnim(self):
         x = 1   #placeHolder
 
+class Environment(GameObject):
+    def __init__(self, image, speed, position, screenWidth, screenHeight):
+        GameObject.__init__(self, image, speed, position, screenWidth, screenHeight)
+        self.collider = mathClass.Collider(image, True, self.position, self.speed)
+
 ############################## PLAYER CLASS ##################################
 
 class Player(GameObject):
-    def __init__(self, image, speed, screenWidth, screenHeight, gravity, mass, timeStep):
-        GameObject.__init__(self, image, speed, screenWidth, screenHeight)
+    def __init__(self, image, speed, position, screenWidth, screenHeight, gravity, mass, timeStep):
+        GameObject.__init__(self, image, speed, position, screenWidth, screenHeight)
         self.playerStates = ["IDLE", "RUNNING", "JUMPING"]
         self.playerState = self.playerStates[0]
         
@@ -87,6 +92,7 @@ class Player(GameObject):
                 if positionX <= self.screenWidth - self.spriteCenter[0]:
                     positionX += self.speed #+ self.displacement
 
+            
             self.position.setX(positionX)
             self.position.setY(positionY)
             # self.collider.position.setX(positionX)
@@ -99,6 +105,8 @@ class Player(GameObject):
             self.timeSinceKeyDown += 1
         else:
             self.displacement = 0
+            positionY += 9
+            self.position.setY(positionY)
             self.velocity = self.initialVelocity
             
 
