@@ -46,8 +46,8 @@ class Collider:
         self.g = 9.8                #gravity
         self.isStatic = isStatic
         self.position = Vec2D(position.getX(), position.getY())
-        self.width = sprite.get_rect().x
-        self.height = sprite.get_rect().y
+        self.width = sprite.get_width()
+        self.height = sprite.get_height()
         self.speed = velocity
 
     def getWidth(self):
@@ -56,12 +56,13 @@ class Collider:
     def getHeight(self):
         return self.height
 
-    def update(self, position):
-        self.physics(position)
+    def update(self, position, speed):
+        self.physics(position, speed)
 
-    def physics(self, position):
+    def physics(self, position, speed):
         self.position.setX(position.getX())
         self.position.setY(position.getY())
+        self.speed = speed
         # otherVec = Vec2D(2, 2)
         # self.position.addVec(otherVec)
 
@@ -76,21 +77,17 @@ class worldSpace:
         self.g = gravity
 
     def update(self, colliderList):
+        i = 0
         for obj in colliderList:
-            i = 0
             if obj.isStatic == False:           #If the collider is from an enviroment obj, we ignore it
                 j = 0
                 for otherObj in colliderList:   #checks every gameobject's collider against the other
-                    if i != j:                  #Skips objects comparing to self
+                    if obj != otherObj:                  #Skips objects comparing to self
                     
                     #Variables written this way cause it's a lot easier to 
-                    #conceptualize intersections between objects
-                    #OBJECT MIDPOINTS
-                        objMidPointX = obj.position.getX() + obj.getWidth() / 2
-                        objMidPointY = obj.position.getY() + obj.getHeight() / 2
-                        otherObjMidPointX = otherObj.position.getX() + otherObj.getWidth() / 2
-                        otherObjMidPointY = otherObj.position.getY() + otherObj.getHeight() / 2
 
+                        objSpeedX = obj.speed[0]
+                        objSpeedY = obj.speed[1]
                         
                     #SIDES OF OBJECTS (LEFT, RIGHT, BOTTOM, TOP)
                         objLeftSide     =   obj.position.getX()
@@ -103,44 +100,39 @@ class worldSpace:
                         otherObjBottom      =   otherObj.position.getY()
                         otherObjTop         =   otherObjBottom + otherObj.getHeight()
 
-                        objectSpeed         = obj.speed
-                        otherObjectSpeed    = otherObj.speed
+                        # objectSpeed         = obj.speed
+                        # otherObjectSpeed    = otherObj.speed
 
                     #Debugging code
                         # print("Midpoint Object: ", objMidPointX)
                         # print("Midpoint otherObject: ", otherObjMidPointX)
-                        
+                        yDis = 1
                     
-                    # if((objTop > otherObjBottom and objMidPointY < otherObjMidPointY)   #Top overlaps bottom
-                    # if (objBottom - objectSpeed < otherObjTop and objMidPointY > otherObjMidPointY): #Bottom overlaps top
-                    # X-AXIS INTERSECTION CHECK   
-                    #     if (objLeftSide - objectSpeed < otherObjRightSide)        #Left side is to left of other objects right side
-                    #     and objMidPointX >= otherObjMidPointX      #Object midpoint is greater than other object midpoint
-                    #     and objBottom < otherObjTop):                            
-                    #         offset = otherObjRightSide - objLeftSide
-                    #         obj.position.setX(obj.position.getX() + offset)
-                    #         print("PUSH RIGHT")
-                            
-                    #     elif(objRightSide > otherObjLeftSide
-                    #     and objMidPointX < otherObjMidPointX):
-                    #         offset = objRightSide - otherObjLeftSide  
-                    #         obj.position.setX(obj.position.getX() - offset)
-                    #         print("PUSH LEFT")
+                        if((objRightSide + objSpeedX > otherObjLeftSide or
+                        objLeftSide + objSpeedX < otherObjRightSide) and
+                        (objTop > otherObjBottom or
+                        objBottom < otherObjTop)):
+                            # objSpeedX *= -1
+                            print("Colliding side: " , j)
+                        elif(objLeftSide < 0 or objRightSide > 600):
+                            # objSpeedX *= -1
+                            print("Colliding: WALL")
 
-                    # # Y-AXIS INTERSECTION CHECK
-                    #     if((objRightSide > otherObjLeftSide and objMidPointX < otherObjMidPointX)   #Right overlaps Left
-                    #     or (objLeftSide < otherObjRightSide and objMidPointX > otherObjMidPointX)): #Left overlaps Right
-                            
-                    #         if (objBottom < otherObjTop             #Bottom of object coord is less than height
-                    #         and objMidPointY >= otherObjMidPointY):   #Object midpoint is greater than other object midpoint
-                    #             offset = otherObjTop - objBottom
-                    #             obj.position.setY(objBottom + offset)
-                    #             print("PUSH UP")
-                                
-                    #         elif(objTop > otherObjBottom
-                    #         and objMidPointY < otherObjMidPointY):
-                    #             offset = objTop - otherObjBottom  
-                    #             obj.position.setY(objBottom - offset)
-                    #             print("PUSH DOWN")                        
-                    j += 1
-                i += 1
+                        if((objRightSide > otherObjLeftSide or
+                        objRightSide < otherObjRightSide) and
+                        (objTop + objSpeedY > otherObjTop or
+                        objBottom + objSpeedY < otherObjTop)):
+                            # objSpeedY *= -1
+                            yDis = 0 
+                            print("Colliding: top" , j)
+                        elif(objBottom < 0 or objTop > 500):
+                            # objSpeedY *= -1
+                            print("Colliding: WALL")
+
+
+                        obj.position.setY(obj.position.getY() + yDis)
+                        obj.speed = [objSpeedX, objSpeedY]
+                        # obj.update(obj.position, obj.speed)
+                    else:
+                        j += 1
+            i += 1

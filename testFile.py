@@ -19,12 +19,12 @@ playerMass = 1      #kilograms
 
 player = pygame.image.load('basicHeart.png')
 player = pygame.transform.scale(player, (128, 128))
-playerSpeed = 5
+playerSpeed = [1, 1]
 playerPos = [5, 5]
 
 ground = pygame.image.load('groundTile00.png')
 ground = pygame.transform.scale(ground, (64, 64))
-groundPos = [screenWidth-64, screenHeight-64]
+groundPos = [screenWidth-64, screenHeight - 64 * 4]
 
 background = pygame.image.load('placeholderBG00.png')
 background = pygame.transform.scale(background, (600, 500))
@@ -51,11 +51,11 @@ colliders.append(c)
 
 counter = 0
 for g in range(10):
-    g = gameObject.Environment(ground, 1.0, [groundPos[0] - counter * 64, groundPos[1]], screenWidth, screenHeight)
+    g = gameObject.Environment(ground, 0.0, [groundPos[0] - counter * 64, groundPos[1]], screenWidth, screenHeight)
     objects.append(g)
     #and add its collider to another list
-    g = g.collider
-    colliders.append(g)
+    cg = g.collider
+    colliders.append(cg)
     counter += 1
 
 #Pygame main loop
@@ -73,7 +73,7 @@ while True:
     for o in objects:
         o.update()
         screen.blit(o.image, (o.position.getX(), o.position.getY()))
-
+    # worldSpace.update(colliders)
     pygame.display.update()
     pygame.time.delay(timeStep) #in milliseconds(?)
     
