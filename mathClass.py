@@ -108,18 +108,6 @@ class worldSpace:
                         # print("Midpoint Object: ", objMidPointX)
                         # print("Midpoint otherObject: ", otherObjMidPointX)
                         yDis = 1
-                    
-                        if(((objRightSide + objSpeedX > otherObjLeftSide and        #right side overlap other's left
-                        objLeftSide + objSpeedX < otherObjRightSide) or             #left side doesn't overlap other's right
-                        (objLeftSide + objSpeedX < otherObjRightSide and            #left side overlaps other's right
-                        objRightSide + objSpeedX > otherObjLeftSide)) and          #right side doesn't overlap other's left
-                        (objTop > otherObjBottom and
-                        objBottom < otherObjTop)):
-                            # objSpeedX *= -1
-                            print("Colliding side: " , j)
-                        elif(objLeftSide < 0 or objRightSide > 600):
-                            # objSpeedX *= -1
-                            print("Colliding: WALL")
 
                         if((objRightSide > otherObjLeftSide and
                         objRightSide < otherObjRightSide) and
@@ -130,16 +118,36 @@ class worldSpace:
                         )):
                             # objSpeedY *= -1
                             # yDis = 0
-                            obj.speed[1] = 0
-                            obj.isGrounded = True
+                            print("Update physics")
+                            if obj.isGrounded == False:
+                                obj.isGrounded = True
+                                print("LANDED")
+                            # obj.speed[1] = 0
                             print("Colliding: top" , j)
                             # obj.position.setY(obj.position.getY())
                         elif(objBottom < 0 or objTop > 500):
-                            objSpeedY *= -1
+                            # objSpeedY *= -1
                             print("Colliding: WALL")
                         elif obj.isGrounded == False:
                             print("FALLING")
-                            obj.position.setY(obj.position.getY() + yDis)
+                            obj.position.setY(obj.position.getY() + yDis + objSpeedY)
+
+                        if(((objRightSide + objSpeedX > otherObjLeftSide and        #right side overlap other's left
+                        objLeftSide + objSpeedX < otherObjRightSide) or             #left side doesn't overlap other's right
+                        (objLeftSide + objSpeedX < otherObjRightSide and            #left side overlaps other's right
+                        objRightSide + objSpeedX > otherObjLeftSide)) and          #right side doesn't overlap other's left
+                        (objTop > otherObjBottom and
+                        objBottom < otherObjTop)):
+                            # obj.speed[0] *= -1;
+                            x = 1
+                            # obj.position.setX(obj.position.getX()
+                            # objSpeedX *= -1
+                            # print("Colliding side: " , j)
+                        elif(objLeftSide < 0 or objRightSide > 600):
+                            # objSpeedX *= -1
+                            print("Colliding: WALL")
+
+
                         # obj.speed = [objSpeedX, objSpeedY]
                         # obj.update(obj.position, obj.speed)
                     else:

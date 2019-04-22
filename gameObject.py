@@ -46,7 +46,6 @@ class Player(GameObject):
         self.collider = mathClass.Collider(self.image, False, self.position, self.speed)
         self.playerStates = ["IDLE", "RUNNING", "JUMPING"]
         self.playerState = self.playerStates[0]
-        self.isGrounded = False
 
 #####INITIALIZE/ASSIGN PHYSICS VARIABLES#####    
             #v = a(t) + v[0]
@@ -64,7 +63,7 @@ class Player(GameObject):
         GameObject.update(self)      
         self.playerController()                             #Reads player inputs
         self.position = self.collider.position
-        print(self.position.getX(), self.position.getY())
+        # print(self.position.getX(), self.position.getY())
         # print(self.speed)
 
 
@@ -85,7 +84,7 @@ class Player(GameObject):
         keys = pygame.key.get_pressed()
 
     #WASD CONTROLLER
-        if(keys[pygame.K_a] or keys[pygame.K_d]):
+        if(keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_SPACE]):
         
         # #VERTICAL
         #     if pygame.key.get_pressed()[pygame.K_w]:
@@ -102,19 +101,28 @@ class Player(GameObject):
                 if positionX >= 0:
                     x = 1
                     # self.speed[0] = -1
-                    positionX -= self.speed[0]*4 #+ self.displacement
+                    positionX -= self.speed[0]*6 #+ self.displacement
             if pygame.key.get_pressed()[pygame.K_d]:
                 if positionX <= self.screenWidth - self.spriteWidth:
                     y = 1
                     # self.speed[0] = 1
-                    positionX += self.speed[0]*4 #+ self.displacement
+                    positionX += self.speed[0]*6 #+ self.displacement
+            if self.collider.isGrounded == True:
+                if keys[pygame.K_SPACE]:
+                    self.collider.isGrounded = False
+                    self.speed[1] = -2.5
+                    self.position.setY(positionY + self.speed[1])
+                    print("JUMPING")
 
             # print(self.collider.position.getX(), self.collider.position.getY())
             self.timeSinceKeyDown = 0
 
+
         elif (self.timeSinceKeyDown < 3):
             self.timeSinceKeyDown += 1
-
+        if self.speed[1] < 0 and self.collider.isGrounded == False:
+            self.speed[1] +=  self.gravity * self.timeStep
+        # self.position.setY(positionY)
         self.position.setX(positionX)
         # self.position.setY(positionY)
         # self.collider.update(self.position, self.speed)

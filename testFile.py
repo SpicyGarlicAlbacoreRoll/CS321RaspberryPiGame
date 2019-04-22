@@ -24,7 +24,7 @@ playerPos = [200, 5]
 
 ground = pygame.image.load('groundTile00.png')
 ground = pygame.transform.scale(ground, (64, 64))
-groundPos = [screenWidth-64, screenHeight - 64 * 4]
+groundPos = [screenWidth-64, screenHeight - 64]
 
 background = pygame.image.load('placeholderBG00.png')
 background = pygame.transform.scale(background, (600, 500))
