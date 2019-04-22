@@ -49,6 +49,7 @@ class Collider:
         self.width = sprite.get_width()
         self.height = sprite.get_height()
         self.speed = velocity
+        self.isGrounded = False
 
     def getWidth(self):
         return self.width
@@ -108,9 +109,11 @@ class worldSpace:
                         # print("Midpoint otherObject: ", otherObjMidPointX)
                         yDis = 1
                     
-                        if((objRightSide + objSpeedX > otherObjLeftSide or
-                        objLeftSide + objSpeedX < otherObjRightSide) and
-                        (objTop > otherObjBottom or
+                        if(((objRightSide + objSpeedX > otherObjLeftSide and        #right side overlap other's left
+                        objLeftSide + objSpeedX < otherObjRightSide) or             #left side doesn't overlap other's right
+                        (objLeftSide + objSpeedX < otherObjRightSide and            #left side overlaps other's right
+                        objRightSide + objSpeedX > otherObjLeftSide)) and          #right side doesn't overlap other's left
+                        (objTop > otherObjBottom and
                         objBottom < otherObjTop)):
                             # objSpeedX *= -1
                             print("Colliding side: " , j)
@@ -118,20 +121,26 @@ class worldSpace:
                             # objSpeedX *= -1
                             print("Colliding: WALL")
 
-                        if((objRightSide > otherObjLeftSide or
+                        if((objRightSide > otherObjLeftSide and
                         objRightSide < otherObjRightSide) and
-                        (objTop + objSpeedY > otherObjTop or
-                        objBottom + objSpeedY < otherObjTop)):
+                        ((objTop + objSpeedY > otherObjTop and      #top doesn't overlap other's top
+                        objBottom + objSpeedY < otherObjTop) or     #bottom overlaps other's top
+                        (objTop + objSpeedY > otherObjBottom and    #top overlap other's bottom
+                        objBottom + objSpeedY < otherObjBottom)        #bottom doesn't overlap other's bottom
+                        )):
                             # objSpeedY *= -1
-                            yDis = 0 
+                            # yDis = 0
+                            obj.speed[1] = 0
+                            obj.isGrounded = True
                             print("Colliding: top" , j)
+                            # obj.position.setY(obj.position.getY())
                         elif(objBottom < 0 or objTop > 500):
-                            # objSpeedY *= -1
+                            objSpeedY *= -1
                             print("Colliding: WALL")
-
-
-                        obj.position.setY(obj.position.getY() + yDis)
-                        obj.speed = [objSpeedX, objSpeedY]
+                        elif obj.isGrounded == False:
+                            print("FALLING")
+                            obj.position.setY(obj.position.getY() + yDis)
+                        # obj.speed = [objSpeedX, objSpeedY]
                         # obj.update(obj.position, obj.speed)
                     else:
                         j += 1

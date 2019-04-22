@@ -63,7 +63,9 @@ class Player(GameObject):
     def update(self):
         GameObject.update(self)      
         self.playerController()                             #Reads player inputs
-        print(self.speed)
+        self.position = self.collider.position
+        print(self.position.getX(), self.position.getY())
+        # print(self.speed)
 
 
     #Old function, tracks cursor, wraps around screen
@@ -98,12 +100,14 @@ class Player(GameObject):
         #HORIZONTAL
             if pygame.key.get_pressed()[pygame.K_a]:
                 if positionX >= 0:
-                    self.speed[0] = -1
-                    positionX += self.speed[0] #+ self.displacement
+                    x = 1
+                    # self.speed[0] = -1
+                    positionX -= self.speed[0]*4 #+ self.displacement
             if pygame.key.get_pressed()[pygame.K_d]:
                 if positionX <= self.screenWidth - self.spriteWidth:
-                    self.speed[0] = 1
-                    positionX += self.speed[0] #+ self.displacement
+                    y = 1
+                    # self.speed[0] = 1
+                    positionX += self.speed[0]*4 #+ self.displacement
 
             # print(self.collider.position.getX(), self.collider.position.getY())
             self.timeSinceKeyDown = 0
@@ -112,8 +116,8 @@ class Player(GameObject):
             self.timeSinceKeyDown += 1
 
         self.position.setX(positionX)
-        self.position.setY(positionY)
-        self.collider.update(self.position, self.speed)
+        # self.position.setY(positionY)
+        # self.collider.update(self.position, self.speed)
 
     def updatePlayerState(self):
         self.playerState = self.playerStates[0]

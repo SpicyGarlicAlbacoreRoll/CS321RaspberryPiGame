@@ -20,7 +20,7 @@ playerMass = 1      #kilograms
 player = pygame.image.load('basicHeart.png')
 player = pygame.transform.scale(player, (128, 128))
 playerSpeed = [1, 1]
-playerPos = [5, 5]
+playerPos = [200, 5]
 
 ground = pygame.image.load('groundTile00.png')
 ground = pygame.transform.scale(ground, (64, 64))
