@@ -58,6 +58,14 @@ for g in range(10):
     colliders.append(cg)
     counter += 1
 
+counter = 0
+for e in range(5):
+    e = gameObject.Environment(ground, 0.0, [groundPos[0] - counter * 64, groundPos[1] - 128], screenWidth, screenHeight)
+    objects.append(e)
+    #and add its collider to another list
+    eg = e.collider
+    colliders.append(eg)
+    counter += 1
 #Pygame main loop
 while True:
     for event in pygame.event.get():
